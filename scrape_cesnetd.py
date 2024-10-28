@@ -456,7 +456,7 @@ logger.info("List created to store the data of all the postings for the job cate
 
 # Loop over the URLs for the job postings for the job category
 logger.info("Starting to loop over the URLs for the job postings for the job category.")
-for url in urls:
+for url in urls[:10]: # TODO: remove the slicing
 
     # Create a list to store the data of the posting
     data_given_posting = []
