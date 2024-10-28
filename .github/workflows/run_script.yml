@@ -15,9 +15,8 @@ jobs:
 
     - name: Sparse-checkout shared-scripts into root directory
       run: |
-        # Initialize a sparse-checkout in the root directory
-        git init
-        git remote add origin https://github.com/counseloreducationdata/shared_scripts.git
+        # Configure sparse-checkout for the shared-scripts repository
+        git remote add shared-scripts https://github.com/counseloreducationdata/shared_scripts.git
 
         # Enable sparse-checkout
         git config core.sparseCheckout true
@@ -27,8 +26,9 @@ jobs:
         echo "text_extractor.py" >> .git/info/sparse-checkout
         echo "url_extractor.py" >> .git/info/sparse-checkout
 
-        # Pull only the specified files from the main branch
-        git pull origin main
+        # Pull only the specified files from the main branch of shared-scripts
+        git fetch shared-scripts main
+        git checkout FETCH_HEAD
       shell: bash
 
     - name: Set up Python
