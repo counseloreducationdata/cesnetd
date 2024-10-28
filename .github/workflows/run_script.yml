@@ -13,6 +13,24 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Sparse-checkout shared-scripts into root directory
+      run: |
+        # Initialize a sparse-checkout in the root directory
+        git init
+        git remote add origin https://github.com/counseloreducationdata/shared_scripts.git
+
+        # Enable sparse-checkout
+        git config core.sparseCheckout true
+
+        # Specify the files to include in sparse-checkout, pulling them directly to root
+        echo "scraper.py" >> .git/info/sparse-checkout
+        echo "text_extractor.py" >> .git/info/sparse-checkout
+        echo "url_extractor.py" >> .git/info/sparse-checkout
+
+        # Pull only the specified files from the main branch
+        git pull origin main
+      shell: bash
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
