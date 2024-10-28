@@ -8,7 +8,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from random import uniform
 from time import sleep
-from url_extractor import extract_urls
 import json
 import logging
 from datetime import datetime
@@ -19,8 +18,9 @@ import random
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from googleapiclient.http import MediaFileUpload
-from scraper import get_selenium_response
-from text_extractor import extract_text
+from shared_scripts.scraper import get_selenium_response
+from shared_scripts.text_extractor import extract_text
+from shared_scripts.url_extractor import extract_urls
 
 ##################################### Setting parameters #####################################
 
