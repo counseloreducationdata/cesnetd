@@ -456,6 +456,8 @@ logger.info("List created to store the data of all the postings for the job cate
 
 # Loop over the URLs for the job postings for the job category
 logger.info("Starting to loop over the URLs for the job postings for the job category.")
+# Line below just for testing -- TODO: remove
+urls = ["https://cesnet.discourse.group/t/tenure-track-assistant-professor-of-counseling-at-california-state-university-northridge-csun/2567"]
 for url in urls:
 
     # Create a list to store the data of the posting
@@ -498,13 +500,30 @@ for url in urls:
             sleep(uniform(SLEEP_MIN_TIME, SLEEP_MAX_TIME))
             logger.info("Driver slept for a bit.")
 
+            # Get the post
+            post = driver.find_element(By.CLASS_NAME, 'cooked')
+            logger.info("Driver got the posting.")
+
+            # Get the URLs in the post
+            urls_in_post = [link.get_attribute('href') for link in post.find_elements(By.TAG_NAME, 'a') if link.get_attribute('href') is not None and "http" in link.get_attribute('href')]
+            logger.info("Driver got the URLs in the posting.")
+            logger.info(f"len urls_in_post: {len(urls_in_post)}") # TODO: remove
+            logger.info(f"urls_in_post: {urls_in_post}") # TODO: remove
+
             # Get the text of the posting
-            text_post = driver.find_element(By.CLASS_NAME, 'cooked').text
+            text_post = post.text
             logger.info("Driver got the text of the posting.")
 
-            # Extract the URLs from the text of the posting
-            urls_in_post = extract_urls(text_post)
+            # Extract the URLs from the text of the posting and add them to urls_in_post
+            urls_in_post += extract_urls(text_post)
             logger.info("URLs extracted from the text of the posting.")
+            logger.info(f"len urls_in_post 2: {len(urls_in_post)}") # TODO: remove
+            logger.info(f"urls_in_post 2: {urls_in_post}") # TODO: remove
+
+            # Remove duplicates from urls_in_post
+            urls_in_post = list(set(urls_in_post))
+            logger.info("Removed duplicates from urls_in_post.")
+            logger.info(f"len urls_in_post 3: {len(urls_in_post)}") # TODO: remove
 
             # Append the URLs in the posting to the list of data for the posting
             data_given_posting.append(urls_in_post)
