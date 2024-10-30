@@ -456,7 +456,7 @@ logger.info("List created to store the data of all the postings for the job cate
 
 # Loop over the URLs for the job postings for the job category
 logger.info("Starting to loop over the URLs for the job postings for the job category.")
-for url in urls[:10]: # TODO: remove slicing
+for url in urls:
 
     # Create a list to store the data of the posting
     data_given_posting = []
@@ -507,7 +507,7 @@ for url in urls[:10]: # TODO: remove slicing
             urls_in_post = [url for link in post.find_elements(By.TAG_NAME, 'a') if link.get_attribute('href') is not None and "http" in link.get_attribute('href') for url in extract_urls(link.get_attribute('href')) if url is not None]
             logger.info("Driver got the URLs in the posting.")
             logger.info(f"len urls_in_post (just hyperlinks in the post): {len(urls_in_post)}")
-            logger.info(f"urls_in_post (just hyperlinks in the post): {urls_in_post}") # TODO: remove
+            logger.info(f"urls_in_post (just hyperlinks in the post): {urls_in_post}")
 
             # Get the text of the posting
             text_post = post.text
@@ -517,7 +517,7 @@ for url in urls[:10]: # TODO: remove slicing
             urls_in_post += extract_urls(text_post)
             logger.info("URLs extracted from the text of the posting.")
             logger.info(f"len urls_in_post (adding URLs from the text): {len(urls_in_post)}")
-            logger.info(f"urls_in_post (adding URLs from the text): {urls_in_post}") # TODO: remove
+            logger.info(f"urls_in_post (adding URLs from the text): {urls_in_post}")
 
             # Remove duplicates from urls_in_post
             urls_in_post = list(set(urls_in_post))
