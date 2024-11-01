@@ -21,6 +21,7 @@ from googleapiclient.http import MediaFileUpload
 from shared_scripts.scraper import get_selenium_response
 from shared_scripts.text_extractor import extract_text
 from shared_scripts.url_extractor import extract_urls
+from shared_scripts.salary_functions import check_salary, find_match_salary
 
 ##################################### Setting parameters #####################################
 
