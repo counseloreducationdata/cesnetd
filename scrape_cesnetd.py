@@ -603,7 +603,7 @@ for data_posting in data_all_postings_job_category:
     logger.info("Starting to iterate over data_all_postings_job_category to scrape URLs in postings.")
 
     # Get the URLs in the posting
-    urls_in_posting = data_posting[3]
+    urls_in_posting = data_posting[6]
 
     # If there are URLs in the posting
     if len(urls_in_posting) > 0:
