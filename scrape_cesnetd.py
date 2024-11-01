@@ -538,16 +538,17 @@ for url in urls:
                 # Extract salary info
                 salary_info = find_match_salary(text_post)
                 logger.info(f"salary_info: {salary_info}.")
-                # Get salary
-                salary = salary_info[0]
-                logger.info(f"salary: {salary}.")
-                # Get string around salary
-                salary_string = salary_info[1]
-                logger.info(f"salary_string: {salary_string}.")
-                # Append info to the list of data for the posting
-                data_given_posting.append(salary)
-                data_given_posting.append(salary_string)
-                logger.info("salary and salary_string appended to the list of data for the posting.")
+                if salary_info is not None:
+                    # Get salary
+                    salary = salary_info[0]
+                    logger.info(f"salary: {salary}.")
+                    # Get string around salary
+                    salary_string = salary_info[1]
+                    logger.info(f"salary_string: {salary_string}.")
+                    # Append info to the list of data for the posting
+                    data_given_posting.append(salary)
+                    data_given_posting.append(salary_string)
+                    logger.info("salary and salary_string appended to the list of data for the posting.")
             else:
                 # Append None to the list of data for the posting
                 data_given_posting.append(None)
@@ -660,16 +661,17 @@ for data_posting in data_all_postings_job_category:
                         # Extract salary info
                         salary_info = find_match_salary(text_url)
                         logger.info(f"salary_info: {salary_info}.")
-                        # Get salary
-                        salary = salary_info[0]
-                        logger.info(f"salary: {salary}.")
-                        # Get string around salary
-                        salary_string = salary_info[1]
-                        logger.info(f"salary_string: {salary_string}.")
-                        # Append info to the list of data for the posting
-                        data_given_url.append(salary)
-                        data_given_url.append(salary_string)
-                        logger.info("salary and salary_string appended to the list.")
+                        if salary_info is not None:
+                            # Get salary
+                            salary = salary_info[0]
+                            logger.info(f"salary: {salary}.")
+                            # Get string around salary
+                            salary_string = salary_info[1]
+                            logger.info(f"salary_string: {salary_string}.")
+                            # Append info to the list of data for the posting
+                            data_given_url.append(salary)
+                            data_given_url.append(salary_string)
+                            logger.info("salary and salary_string appended to the list.")
                     else:
                         # Append None to the list of data for the posting
                         data_given_url.append(None)
