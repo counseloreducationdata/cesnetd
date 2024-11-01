@@ -549,6 +549,10 @@ for url in urls:
                     data_given_posting.append(salary)
                     data_given_posting.append(salary_string)
                     logger.info("salary and salary_string appended to the list of data for the posting.")
+                else:
+                    # Append None to the list of data for the posting
+                    data_given_posting.append(None)
+                    data_given_posting.append(None)
             else:
                 # Append None to the list of data for the posting
                 data_given_posting.append(None)
@@ -672,6 +676,10 @@ for data_posting in data_all_postings_job_category:
                             data_given_url.append(salary)
                             data_given_url.append(salary_string)
                             logger.info("salary and salary_string appended to the list.")
+                        else:
+                            # Append None to the list of data for the posting
+                            data_given_posting.append(None)
+                            data_given_posting.append(None)
                     else:
                         # Append None to the list of data for the posting
                         data_given_url.append(None)
