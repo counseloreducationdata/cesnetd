@@ -524,6 +524,34 @@ for url in urls:
             urls_in_post = list(set(urls_in_post))
             logger.info("Removed duplicates from urls_in_post.")
             logger.info(f"len urls_in_post after removing duplicates: {len(urls_in_post)}")
+            
+            # Check if there seems to be salary info
+            salary_flag = check_salary(text_post)
+            logger.info(f"salary_flag: {salary_flag}.")
+
+            # Append salary flag to the list of data for the posting
+            data_given_posting.append(salary_flag)
+            logger.info("Salary flag appended to the list of data for the posting.")
+
+            # If there seems to be salary info
+            if salary_flag is not None:
+                # Extract salary info
+                salary_info = find_match_salary(text_post)
+                logger.info(f"salary_info: {salary_info}.")
+                # Get salary
+                salary = salary_info[0]
+                logger.info(f"salary: {salary}.")
+                # Get string around salary
+                salary_string = salary_info[1]
+                logger.info(f"salary_string: {salary_string}.")
+                # Append info to the list of data for the posting
+                data_given_posting.append(salary)
+                data_given_posting.append(salary_string)
+                logger.info("salary and salary_string appended to the list of data for the posting.")
+            else:
+                # Append None to the list of data for the posting
+                data_given_posting.append(None)
+                data_given_posting.append(None)
 
             # Append the URLs in the posting to the list of data for the posting
             data_given_posting.append(urls_in_post)
@@ -532,7 +560,7 @@ for url in urls:
             # Append the text of the posting to the list of data for the posting
             data_given_posting.append(text_post)
             logger.info("Text of the posting appended to the list of data for the posting.")
-
+            
             # Break the loop if the re-try block was successful
             logger.info("Re-try block successful. About to break the re-try loop.")
             break
@@ -548,6 +576,9 @@ for url in urls:
                 logger.info("No more retries left. Couldn't scrape {url}. Error: {e}.")
 
                 # Append FAILURE to the data of the posting
+                data_given_posting.append("FAILURE")
+                data_given_posting.append("FAILURE")
+                data_given_posting.append("FAILURE")
                 data_given_posting.append("FAILURE")
                 data_given_posting.append("FAILURE")
                 logger.info("FAILURE appended to the data of the posting.")
@@ -612,17 +643,46 @@ for data_posting in data_all_postings_job_category:
                     source_code_url = get_selenium_response(url)
                     logger.info("Scraped the URL.")
 
-                    # Store the source code for the URL
-                    data_given_url.append(source_code_url)
-                    logger.info("Source code for the URL stored.")
-
                     # Extract the text from the source code
                     text_url = extract_text(source_code_url)
                     logger.info("Extracted the text from the source code.")
+            
+                    # Check if there seems to be salary info
+                    salary_flag = check_salary(text_url)
+                    logger.info(f"salary_flag: {salary_flag}.")
+        
+                    # Append salary flag to the list
+                    data_given_url.append(salary_flag)
+                    logger.info("Salary flag appended to the list.")
+        
+                    # If there seems to be salary info
+                    if salary_flag is not None:
+                        # Extract salary info
+                        salary_info = find_match_salary(text_url)
+                        logger.info(f"salary_info: {salary_info}.")
+                        # Get salary
+                        salary = salary_info[0]
+                        logger.info(f"salary: {salary}.")
+                        # Get string around salary
+                        salary_string = salary_info[1]
+                        logger.info(f"salary_string: {salary_string}.")
+                        # Append info to the list of data for the posting
+                        data_given_url.append(salary)
+                        data_given_url.append(salary_string)
+                        logger.info("salary and salary_string appended to the list.")
+                    else:
+                        # Append None to the list of data for the posting
+                        data_given_url.append(None)
+                        data_given_url.append(None)
 
+                    # Store the source code for the URL
+                    data_given_url.append(source_code_url)
+                    logger.info("Source code for the URL stored.")
+                    
                     # Store the text for the URL
                     data_given_url.append(text_url)
-
+                    logger.info("Text for the URL stored.")
+                    
                     # Break the loop if the re-try block was successful
                     logger.info("Re-try block successful. About to break the re-try loop.")
                     break
@@ -638,6 +698,9 @@ for data_posting in data_all_postings_job_category:
                         logger.info(f"No more retries left. Couldn't scrape {url}. Error: {e}.")
 
                         # Append FAILURE to the data of the URL
+                        data_given_url.append("FAILURE")
+                        data_given_url.append("FAILURE")
+                        data_given_url.append("FAILURE")
                         data_given_url.append("FAILURE")
                         data_given_url.append("FAILURE")
                         logger.info("FAILURE appended to the data of the URL.")
@@ -659,12 +722,12 @@ for attempt in range(RETRIES):
         logger.info(f"Re-try block for data for postings (Google Sheets). Attempt {attempt + 1}.")
 
         # Range to write the data
-        range_sheet="A"+str(n_postings+1)+":C10000000"
+        range_sheet="A"+str(n_postings+1)+":F10000000"
         logger.info("Prepared range to write the data for the postings.")
 
         # Body of the request
         # id, url, ts
-        body={"values": [element[0:3] for element in data_all_postings_job_category]} 
+        body={"values": [element[0:6] for element in data_all_postings_job_category]} 
         logger.info("Prepared body of the request for the postings.")
 
         # Execute the request
@@ -704,12 +767,12 @@ for attempt in range(RETRIES):
         logger.info(f"Re-try block for data for URLs postings (Google Sheets). Attempt {attempt + 1}.")
 
         # Range to write the data
-        range_sheet="A"+str(n_urls_in_postings+1)+":E10000000" 
+        range_sheet="A"+str(n_urls_in_postings+1)+":H10000000" 
         logger.info("Prepared range to write the data for the URLs in postings.")
 
         # Body of the request
         # id, id, url, url, ts
-        body={"values": [element[:5] for element in data_all_urls_in_postings]} 
+        body={"values": [element[:8] for element in data_all_urls_in_postings]} 
         logger.info("Prepared body of the request for the URLs in postings.")
 
         # Execute the request
